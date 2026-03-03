@@ -15,7 +15,7 @@ def afficher_onglet1():
     
 
     # --- Chargement des données ---
-    df = pd.read_excel('Dataset commercial.xlsx')
+    df = pd.read_excel('../Dataset commercial.xlsx')
 
     # --- Styles pour les cartes KPI ---
     st.markdown("""

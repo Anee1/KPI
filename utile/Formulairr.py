@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 
-DB_FILE = "Dataset commercial.xlsx"
+DB_FILE = "../Dataset commercial.xlsx"
 
 def charger_donnees():
     if os.path.exists(DB_FILE):

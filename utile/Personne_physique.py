@@ -63,7 +63,7 @@ def afficher_onglet2():
 
 
     # --- Chargement des données ---
-    df = pd.read_excel('Dataset commercial.xlsx')
+    df = pd.read_excel('../Dataset commercial.xlsx')
 
     # --- Fonction pour afficher une carte KPI ---
     def metric_card(label, value):
