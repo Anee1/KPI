@@ -80,7 +80,7 @@ def afficher_onglet3():
     Objectif_souscription_2026 = 70_000_000_000 # Objectif annuel de souscription en FCFA
 
     # --- Chargement des données ---
-    df = pd.read_excel('../Dataset commercial.xlsx')
+    df = pd.read_excel('Dataset commercial.xlsx')
 
     # --- Styles pour les cartes KPI ---
     st.markdown("""

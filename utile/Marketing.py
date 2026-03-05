@@ -62,7 +62,7 @@ def afficher_onglet4():
 
 
     # --- Chargement des données ---
-    donné = pd.read_excel('../Imamiah Monney.xlsx', sheet_name=None)
+    donné = pd.read_excel('Imamiah Monney.xlsx', sheet_name=None)
     clé = list(donné.keys())
     Partenariat_df = donné[clé[0]]
     Campagne_df = donné[clé[1]]
