@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 from KPI import nombre_clients, montant_souscrit_total, plot_histogramme_statut, taux_conversion, delai_median_conversion,pipeline_dormant,plot_pie_souscription_objectif
@@ -63,7 +65,10 @@ def afficher_onglet2():
 
 
     # --- Chargement des données ---
-    df = pd.read_excel('Dataset commercial.xlsx')
+    file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
+
+    df = pd.read_excel(file_path)
+    #df = pd.read_excel('Dataset commercial.xlsx')
 
     # --- Fonction pour afficher une carte KPI ---
     def metric_card(label, value):

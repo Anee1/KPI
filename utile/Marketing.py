@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 from KPI import nb_campagnes_marketing, engagement_digital, nb_followers_campagnes, performance_volume_partenariats,taux_transformation_partenariat,nb_partenariats_conclus,nb_partenariats_inities
@@ -62,7 +64,11 @@ def afficher_onglet4():
 
 
     # --- Chargement des données ---
-    donné = pd.read_excel('Imamiah Monney.xlsx', sheet_name=None)
+    file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
+
+    donné = pd.read_excel(file_path,sheet_name=None)
+    
+    #donné = pd.read_excel('Imamiah Monney.xlsx', sheet_name=None)
     clé = list(donné.keys())
     Partenariat_df = donné[clé[0]]
     Campagne_df = donné[clé[1]]
