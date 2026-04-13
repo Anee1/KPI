@@ -327,6 +327,7 @@ def engagement_digital(data, annee=None, canal=None):
 
 
 def nb_followers_campagnes(data, annee=None, canal=None):
+
     """
     Nombre de nouveaux followers générés par les campagnes digitales.
     Calculé comme : followers_apres - followers_avant
@@ -381,6 +382,7 @@ def nb_followers_campagnes(data, annee=None, canal=None):
 # ─────────────────────────────────────────────
 
 def nb_partenariats_inities(data, annee=None, commercial=None):
+
     """
     Nombre de nouveaux partenariats initiés.
     Statuts considérés comme "initié" : 'initié', 'en cours', 'contacté'
@@ -419,6 +421,7 @@ def nb_partenariats_inities(data, annee=None, commercial=None):
 
 
 def nb_partenariats_conclus(data, annee=None, commercial=None):
+
     """
     Nombre de nouveaux partenariats conclus.
     Statut considéré comme "conclu" : 'conclu', 'actif', 'signé'
@@ -457,6 +460,7 @@ def nb_partenariats_conclus(data, annee=None, commercial=None):
 
 
 def taux_transformation_partenariat(data, annee=None, commercial=None):
+
     """
     Taux de transformation des partenariats (conclus / initiés).
 
@@ -478,6 +482,7 @@ def taux_transformation_partenariat(data, annee=None, commercial=None):
 
 
 def performance_volume_partenariats(data, annee=None):
+
     """
     Comparaison entre volume objectif et volume réalisé par les partenariats.
 
@@ -528,3 +533,99 @@ def performance_volume_partenariats(data, annee=None):
             'objectif_total': 0, 'realise_total': 0,
             'taux_realisation': 0.0, 'detail_par_partenaire': {}
         }
+
+
+def graph_interactif_engagement(data, annee=None):
+    df = data.copy()
+    df['date_lancement'] = pd.to_datetime(df['date_lancement'], errors='coerce')
+
+    if annee:
+        df = df[df['date_lancement'].dt.year == annee]
+    
+    # Calcul de l'engagement total pour l'axe Y
+    df['engagement_total'] = df['likes'] + df['comments'] + df['shares']
+
+    fig = px.scatter(
+        df, 
+        x="impressions", 
+        y="engagement_total",
+        size="budget", 
+        color="canal",
+        hover_name="nom_campagne",
+        title=f"Rapport Engagement vs Portée ({annee if annee else 'Global'})",
+        labels={"engagement_total": "Total Interactions", "impressions": "Impressions (Reach)"},
+        template="plotly_white"
+    )
+    return fig
+
+def graph_funnel_partenariats(inities, conclus, commercial=None):
+    
+    # Taux de conversion
+    taux = (conclus / inities * 100) if inities else 0
+    
+    fig = go.Figure(go.Funnel(
+        y=["Partenariats initiés", "Partenariats conclus"],
+        x=[inities, conclus],
+        
+        text=[
+            f"{inities} initiés",
+            f"{conclus} conclus<br>{taux:.1f}% de conversion"
+        ],
+        
+        textposition="inside",
+        textinfo="text",
+        
+        marker=dict(
+            color=["#A0AEC0", "#16A34A"],  # gris -> vert
+            line=dict(width=[1,3], color=["#718096", "#065F46"])
+        ),
+        
+        opacity=0.9
+    ))
+
+    title = (
+        f"Tunnel de conversion des partenariats — {commercial}"
+        if commercial
+        else "Tunnel de conversion des partenariats"
+    )
+
+    fig.update_layout(
+        title=title,
+        template="plotly_white",
+        font=dict(size=13),
+    )
+
+    # Annotation taux global
+    fig.add_annotation(
+        text=f"Taux de conversion : <b>{taux:.1f}%</b>",
+        xref="paper",
+        yref="paper",
+        x=0.5,
+        y=-0.15,
+        showarrow=False,
+        font=dict(size=14)
+    )
+
+    return fig
+
+def graph_interactif_performance(data, annee=None):
+    # Utilisation de ta fonction de calcul existante
+    perf_data = performance_volume_partenariats(data, annee)
+    detail = perf_data['detail_par_partenaire']
+    
+    # Transformation du dictionnaire en DataFrame pour Plotly
+    df_plot = pd.DataFrame.from_dict(detail, orient='index').reset_index()
+    df_plot.columns = ['Partenaire', 'Objectif', 'Réalisé']
+    
+    fig = px.bar(
+        df_plot, 
+        x="Partenaire", 
+        y=["Objectif", "Réalisé"],
+        barmode="group",
+        title="Comparaison Objectifs vs Réalisé par Partenaire",
+        labels={"value": "Volume", "variable": "Indicateur"},
+        color_discrete_map={"Objectif": "#AB63FA", "Réalisé": "#FFA15A"},
+        template="plotly_dark" # Style sombre pour un look dashboard
+    )
+    
+    return fig

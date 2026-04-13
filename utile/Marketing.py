@@ -2,9 +2,9 @@ from pathlib import Path
 
 import streamlit as st
 import pandas as pd
-from KPI import nb_campagnes_marketing, engagement_digital, nb_followers_campagnes, performance_volume_partenariats,taux_transformation_partenariat,nb_partenariats_conclus,nb_partenariats_inities
+from KPI import graph_funnel_partenariats, graph_interactif_performance, nb_campagnes_marketing, engagement_digital, nb_followers_campagnes, performance_volume_partenariats,taux_transformation_partenariat,nb_partenariats_conclus,nb_partenariats_inities
 
-from Formulairr import afficher_formulaire_et_tableau
+from Formulairemak import afficher_formulaire_et_tableau
 
 
 import plotly.express as px
@@ -64,7 +64,7 @@ def afficher_onglet4():
 
 
     # --- Chargement des données ---
-    file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
+    file_path = Path(__file__).parent.parent / "Imamiah Monney.xlsx"
 
     donné = pd.read_excel(file_path,sheet_name=None)
     
@@ -92,7 +92,6 @@ def afficher_onglet4():
     nb_campagnes_marketings = nb_campagnes_marketing(Campagne_df)
    
 
-
     
      # --- Affichage des KPI ---
     col1, col2, col3, col4 = st.columns(4)
@@ -106,4 +105,11 @@ def afficher_onglet4():
         metric_card("Campagnes Marketing", nb_campagnes_marketings)
     
     
-    #st.write("Taux de Transformation des Partenariats:", taux_transformations_partenariats)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.plotly_chart(graph_funnel_partenariats(Partenariat_init, Partenariat_conclus), use_container_width=True)
+
+    with col2:
+        st.plotly_chart(graph_interactif_performance(Partenariat_df), use_container_width=True )
+
+    afficher_formulaire_et_tableau()

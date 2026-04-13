@@ -128,7 +128,7 @@ def afficher_onglet3():
     
 
     with st.expander("⚙️ Configuration des paramtres",expanded=False):
-        periode = st.number_input ("Periode d'anlyse", min_value=1, max_value=200, value=12, step=1,key="nombre_3")
+        periode = st.number_input ("Periode d'analyse", min_value=1, max_value=200, value=12, step=1,key="nombre_3")
       
 
     df = filtrer_par_commercial (df, "KOUASSI NELLY")
