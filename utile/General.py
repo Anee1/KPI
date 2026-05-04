@@ -2,6 +2,7 @@ from pathlib import Path
 
 import streamlit as st
 import pandas as pd
+import sys
 
 from KPI import (
     nombre_clients, montant_souscrit_total, plot_histogramme_statut,
@@ -12,6 +13,7 @@ from filtre import clients_Anné, filtrer_par_mois, filtrer_par_commercial
 import plotly.express as px
 
 def afficher_onglet1():
+   
     # =========================
     # CONFIG PAGE
     # =========================
@@ -20,9 +22,18 @@ def afficher_onglet1():
     # --- Chargement des données ---
    
 
+    
+
     file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
 
-    df = pd.read_excel(file_path)
+    try:
+        df = pd.read_excel(file_path)
+    except FileNotFoundError:
+        print("Donnée indisponible")
+        sys.exit()
+
+
+    
    
 
     # --- Styles pour les cartes KPI ---
@@ -65,7 +76,7 @@ def afficher_onglet1():
             key="select_commercial"  # clé unique
         )
         moi = col2.number_input(
-            "Période d'analyse",
+            "Période d'analyse (en mois)",
             min_value=1,
             max_value=12,
             value=3,
@@ -79,7 +90,7 @@ def afficher_onglet1():
 
     df = filtrer_par_mois(df, moi)
 
-    Objectif_souscription_2026 = 120_000_000_000   # Objectif annuel de souscription en FCFA
+    Objectif_souscription_2026 = 120_000_000_000  # Objectif annuel de souscription en FCFA
 
     # --- Calcul des KPI ---
     Objectif_realise_Annee = montant_souscrit_total(clients_Anné(df, 2026))

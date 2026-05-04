@@ -1,5 +1,6 @@
 
 from pathlib import Path
+import sys
 import streamlit as st
 import pandas as pd
 from KPI import nombre_clients, montant_souscrit_total, plot_histogramme_statut, taux_conversion, delai_median_conversion,pipeline_dormant,plot_pie_souscription_objectif
@@ -79,11 +80,16 @@ def afficher_onglet3():
     """, unsafe_allow_html=True)
 
 
-    Objectif_souscription_2026 = 70_000_000_000 # Objectif annuel de souscription en FCFA
+    Objectif_souscription_2026 = 46_666_666_666  # Objectif annuel de souscription en FCFA
 
     # --- Chargement des données ---
     file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
-    df = pd.read_excel(file_path)
+
+    try:
+        df = pd.read_excel(file_path)
+    except FileNotFoundError:
+        print("Donnée indisponible")
+        sys.exit()
    
     # --- Styles pour les cartes KPI ---
     st.markdown("""
@@ -128,10 +134,10 @@ def afficher_onglet3():
     
 
     with st.expander("⚙️ Configuration des paramtres",expanded=False):
-        periode = st.number_input ("Periode d'analyse", min_value=1, max_value=200, value=12, step=1,key="nombre_3")
+        periode = st.number_input ("Periode d'analyse (en semaines)", min_value=1, max_value=20000, value=12, step=1,key="nombre_3")
       
 
-    df = filtrer_par_commercial (df, "KOUASSI NELLY")
+    df = filtrer_par_commercial (df, "N'GUESSAN GRACE ROMANCE")
 
     df = filtrer_par_Semaine (df, periode)
 

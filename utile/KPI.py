@@ -1,19 +1,13 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
-
-#Nombre de nouveaux clients
-
-import pandas as pd
-import numpy as np
-import plotly.express as px
 import plotly.graph_objects as go
 
 # 1. Nombre de clients
 def nombre_clients(data):
     """Calcul du nombre total de clients dans le DataFrame."""
     try:
-        data_clients = data[data['Statut'] == 'Converti']   
+        data_clients = data[data['Statut'] == 'Converti']
         return data_clients.shape[0]
     except Exception:
         return 0
@@ -30,12 +24,13 @@ def montant_souscrit_total(data):
 def taux_conversion(data):
     """Calcul du taux de conversion global."""
     try:
-        total_prospects = data.shape[0]
+        data__reel = data.copy()
+        total_prospects = data__reel.shape[0]
         # Gestion de la division par 0
         if total_prospects == 0:
             return 0.0
             
-        return data[data['Statut'] == 'Converti'].shape[0] / total_prospects
+        return data__reel[data__reel['Statut'] == 'Converti'].shape[0] / total_prospects
     except Exception:
         return 0.0
 
@@ -81,6 +76,7 @@ def clients_2026(data):
             (data['Statut'] == 'Converti') &
             (date_conv.dt.year == 2026)
         ]
+
         return clients_2026.shape[0]
     except Exception:
         return 0
@@ -89,6 +85,7 @@ def clients_2026(data):
 def plot_histogramme_statut(df):
     """Affiche un graphique de répartition des clients."""
     try:
+        
         statut_count = (
             df["Statut"]
             .dropna()
@@ -130,6 +127,8 @@ def plot_histogramme_statut(df):
 # 8. Taux effectif de souscription
 def Taux_effectif_souscription(data):
     """Calcul du taux effectif de souscription."""
+
+    data = data[data['Statut'] == 'Converti'].unique()
     try:
         souscription_esperee = data['Souscription_esperé'].sum()
         
@@ -147,9 +146,7 @@ def Taux_effectif_souscription(data):
 
 
 
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+
 
 def plot_pie_souscription_objectif(df, objectif, colonne_montant="Montant_souscription"):
     """

@@ -67,26 +67,28 @@ tab_general, tab_personne_physique, tab_institutionnel, tab_marketing = st.tabs(
 
 with tab_general:
     Objectif_souscription_2026 = 120_000_000_000  # Objectif annuel de souscription en FCFA
-    st.subheader(f"🌍  Vue d’ensemble de l'activité commerciale | {Objectif_souscription_2026:,.0f} FCFA")
+    st.subheader(f"🌍  Vue d’ensemble de l'activité commerciale Objectif  {Objectif_souscription_2026:,.0f} FCFA")
     st.divider()
     afficher_onglet1()
 
 
 with tab_personne_physique:
-    Objectif_souscription_2026 = 90_000_000_000   # Objectif annuel de souscription en FCFA
+    Objectif_souscription_2026 =  33_333_333_335 
+   # Objectif annuel de souscription en FCFA
     st.subheader(f"👤 Tableau de bord Personne Physique Objectif {Objectif_souscription_2026:,.0f} FCFA")
     st.divider()
     afficher_onglet2()
 
 
 with tab_institutionnel:
-    Objectif_souscription_2026 = 70_000_000_000   # Objectif annuel de souscription en FCFA
+    Objectif_souscription_2026 = 46_666_666_666   # Objectif annuel de souscription en FCFA
     st.subheader(f"🏢 Tableau de bord Institutionnel Objectif {Objectif_souscription_2026:,.0f} FCFA")
     st.divider()
     afficher_onglet3()
 
 with tab_marketing:
-    st.subheader("🌐 Tableau de bord Marketing")
+    Objectif_souscription_2026 = 13_333_333_334  # Objectif annuel de souscription en FCFA 
+    st.subheader(f"🌐 Tableau de bord Marketing {Objectif_souscription_2026:,.0f} FCFA")
     st.divider()
     afficher_onglet4()
 

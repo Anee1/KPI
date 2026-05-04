@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 
 import streamlit as st
 import pandas as pd
@@ -67,7 +68,11 @@ def afficher_onglet2():
     # --- Chargement des données ---
     file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
 
-    df = pd.read_excel(file_path)
+    try:
+        df = pd.read_excel(file_path)
+    except FileNotFoundError:
+        st.error("Donnée indisponible")
+        sys.exit()
     #df = pd.read_excel('Dataset commercial.xlsx')
 
     # --- Fonction pour afficher une carte KPI ---
@@ -85,18 +90,18 @@ def afficher_onglet2():
     # --- Expander paramètres ---
     with st.expander("⚙️ Configuration des paramtres", expanded=False):
         periode = st.number_input(
-            "Période d'analyse",
+            "Période d'analyse (en semaines)",
             min_value=1,
-            max_value=200,
+            max_value=20000,
             value=12,
             step=1,
             key="periode_analysis"
         )
 
     # --- Filtrage des données ---
-    df = filtrer_par_commercial(df, "N'GUESSAN GRACE ROMANCE")
+    df = filtrer_par_commercial(df, "KOUASSI NELLY")
     df = filtrer_par_Semaine(df, periode)
-    Objectif_souscription_2026 = 90_000_000_000   # Objectif annuel de souscription en FCFA
+    Objectif_souscription_2026 = 33_333_333_335   # Objectif annuel de souscription en FCFA
 
     # --- Calcul des KPI ---
     Objectif_realise_Annee = montant_souscrit_total(clients_Anné(df, 2026))

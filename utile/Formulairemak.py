@@ -41,18 +41,22 @@ def afficher_formulaire_et_tableau():
     # --- SECTION 1 : ENREGISTREMENT ---
     with st.expander("➕ Ajouter un nouveau partenaire", expanded=True):
         with st.form("form_partenaire", clear_on_submit=True):
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             nom = col1.text_input("Nom du partenaire")
             type_p = col2.selectbox("Type de partenaire", ["Apporteur d'affaires", "Institutionnel", "Distributeur", "Autre"])
-            
+            d_contact = col3.date_input("Date du premier contact")
             c1, c2, c3 = st.columns(3)
-            d_contact = c2.date_input("Date du premier contact")
+            
             origine = c1.text_input("Origine du contact (ex: LinkedIn, Salon)")
-            stat = c3.selectbox("Statut", ["Prospect", "En discussion", "Actif", "Inactif"])
+            stat = c2.selectbox("Statut", ["Prospect", "En discussion", "Actif", "Inactif"])
+            mail = c3.text_input("Email de contact")
 
-            c4, c5 = st.columns(2)
+
+
+            c4, c5 , c6= st.columns(3)
             obj_vol = c4.number_input("Objectif volume (XOF)", min_value=0)
             vol_real = c5.number_input("Volume réalisé (XOF)", min_value=0)
+            contact = c6.number_input("Contact téléphonique")
 
             if st.form_submit_button("💾 Enregistrer le partenaire"):
                 new_row = pd.DataFrame([{
@@ -63,7 +67,11 @@ def afficher_formulaire_et_tableau():
                     "statut": stat,
                     "origine_contact": origine,
                     "objectif_volume": obj_vol,
-                    "volume_realise": vol_real
+                    "volume_realise": vol_real,
+                    "Contact": contact,
+                    "Mail": mail
+
+
                 }])
                 
                 st.session_state.df = pd.concat([st.session_state.df, new_row], ignore_index=True)
