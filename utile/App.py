@@ -1,35 +1,15 @@
 import streamlit as st
 import pandas as pd
-#from utile.KPI import *
+from KPI import *
 from filtre import *
 from Institu import *
 from Personne_physique import *
 from General import *
 from Marketing import *
-
+from pathlib import Path
 
 st.set_page_config(page_title="Pilotage Activité Commerciale", layout="wide")
 
-st.markdown("""
-<style>
-div[data-baseweb="tab"] {
-    font-size: 20px;
-    font-weight: 600;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    div[data-baseweb="tab-list"] {
-        justify-content: space-between;
-    }
-    div[data-baseweb="tab"] {
-        flex-grow: 1;
-        text-align: center;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 
 # --- Configuration générale ---
@@ -60,10 +40,28 @@ with col2:
 
 
 # --- Personnalisation CSS ---
+def load_css():
+    """Charge le fichier CSS externe et l'injecte dans Streamlit."""
+    css_file = Path.cwd() / "assets" / "style.css"
+    try:
+        with open(css_file, "r") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning(f"Fichier CSS introuvable au chemin : {css_file}")
 
+# --- Appel de la fonction (Applique le style à toute l'app) ---
+load_css()
 
 # --- Structure des onglets ---
-tab_general, tab_personne_physique, tab_institutionnel, tab_marketing = st.tabs(["🌍 Vue Générale", "👤 Personne Physique", "🏢 Institutionnel","🌐 Marketing"])
+# Dans App.py
+from Formulaire_CRV import afficher_formulaire_crv
+
+# Structure des onglets existants + le nouveau
+tab_general, tab_personne_physique, tab_institutionnel, tab_marketing, tab_crv = st.tabs(["🌍 Vue Générale", "👤 Personne Physique", "🏢 Institutionnel", "🌐 Marketing", "📝 Nouveau CRV"])
+
+# ... vos autres onglets ...
+
+
 
 with tab_general:
     Objectif_souscription_2026 = 120_000_000_000  # Objectif annuel de souscription en FCFA
@@ -91,6 +89,11 @@ with tab_marketing:
     st.subheader(f"🌐 Tableau de bord Marketing {Objectif_souscription_2026:,.0f} FCFA")
     st.divider()
     afficher_onglet4()
+
+with tab_crv:
+    st.subheader("Générateur Automatique de Compte Rendu")
+    st.divider()
+    afficher_formulaire_crv()
 
 st.markdown("""
         <footer>

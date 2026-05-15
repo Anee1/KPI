@@ -1,16 +1,15 @@
-from pathlib import Path
+
 
 import streamlit as st
-import pandas as pd
-import sys
 
+from chargement_data import load_commercial_data, load_partenariats_data
 from KPI import (
     nombre_clients, montant_souscrit_total, plot_histogramme_statut,
     taux_conversion, delai_median_conversion, pipeline_dormant,
     plot_pie_souscription_objectif
 )
 from filtre import clients_Anné, filtrer_par_mois, filtrer_par_commercial
-import plotly.express as px
+
 
 def afficher_onglet1():
    
@@ -21,36 +20,12 @@ def afficher_onglet1():
 
     # --- Chargement des données ---
    
+    df = load_commercial_data()
 
-    
-
-    file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
-
-    try:
-        df = pd.read_excel(file_path)
-    except FileNotFoundError:
-        print("Donnée indisponible")
-        sys.exit()
+    #donnees_partenariats = load_partenariats_data()
 
 
-    
-   
 
-    # --- Styles pour les cartes KPI ---
-    st.markdown("""
-        <style>
-        .metric-card {
-            padding: 20px 25px;
-            border-radius: 12px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 3px 10px rgba(0,0,0,0.10);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .metric-title { font-size: 14px; color: #555; font-weight: 500; margin-bottom: 5px; }
-        .metric-value { font-size: 28px; color: #1f77b4; font-weight: 700; }
-        </style>
-    """, unsafe_allow_html=True)
 
     # --- Fonction pour afficher une carte KPI ---
     def metric_card(label, value):

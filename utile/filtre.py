@@ -1,8 +1,8 @@
 import pandas as pd
-import numpy as np
 
 
-#clients par année 
+
+#clients par année
 def clients_Anné(data,Annee):
     """
     clients acquis .
@@ -21,6 +21,7 @@ def clients_Anné(data,Annee):
 
     return clients_annee
 
+
 def filtrer_par_mois(data, mois):
     """
     Filtre les données pour ne conserver que celles des derniers 'mois' mois.
@@ -32,11 +33,6 @@ def filtrer_par_mois(data, mois):
     Returns:
         pd.DataFrame: Le DataFrame filtré.
     """
-
-
-    data['Date_premier_contact'] = pd.to_datetime(data['Date_premier_contact'])
-    data['Date_conversion'] = pd.to_datetime(data['Date_conversion'])
-
     date_ref = pd.Timestamp.today()
 
     # Fenêtre 3 mois glissants
@@ -61,9 +57,6 @@ def filtrer_par_Semaine(data, semaine):
     Returns:
         pd.DataFrame: Le DataFrame filtré.
     """
-    data['Date_premier_contact'] = pd.to_datetime(data['Date_premier_contact'])
-    data['Date_conversion'] = pd.to_datetime(data['Date_conversion'])
-
     date_ref = pd.Timestamp.today()
 
     # Fenêtre 3 semaines glissants

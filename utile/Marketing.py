@@ -1,14 +1,11 @@
-from pathlib import Path
+
 
 import streamlit as st
-import pandas as pd
 from KPI import graph_funnel_partenariats, graph_interactif_performance, nb_campagnes_marketing, engagement_digital, nb_followers_campagnes, performance_volume_partenariats,taux_transformation_partenariat,nb_partenariats_conclus,nb_partenariats_inities
 
 from Formulairemak import afficher_formulaire_et_tableau
 
-
-import plotly.express as px
-
+from chargement_data import load_commercial_data, load_partenariats_data
 
 def afficher_onglet4():
 
@@ -16,58 +13,11 @@ def afficher_onglet4():
     # CONFIG PAGE
     # =========================
 
-    # --- Personnalisation CSS ---
-    st.markdown("""
-        <style>
-        :root { --ucamwal-red: #C8102E; }
-        h1, h2, h3 { color: var(--ucamwal-red); }
-        div.stButton > button:first-child {
-            background-color: var(--ucamwal-red);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            height: 3em;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        div.stButton > button:first-child:hover {
-            background-color: #a00c25;
-            color: #fff;
-        }
-        .stDataFrame table thead th {
-            background-color: var(--ucamwal-red) !important;
-            color: white !important;
-            font-weight: bold !important;
-            text-align: center !important;
-        }
-        .stDataFrame table tbody td { text-align: center !important; }
-        section[data-testid="stSidebar"] { background-color: #fff5f5; }
-        footer {
-            background-color: #f5f5f5;
-            color: #666;
-            padding: 10px;
-            text-align: center;
-            border-top: 2px solid var(--ucamwal-red);
-        }
-        .metric-card {
-            padding: 20px 25px;
-            border-radius: 12px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 3px 10px rgba(0,0,0,0.10);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .metric-title { font-size: 14px; color: #555; font-weight: 500; margin-bottom: 5px; }
-        .metric-value { font-size: 28px; color: #1f77b4; font-weight: 700; }
-        </style>
-    """, unsafe_allow_html=True)
 
 
     # --- Chargement des données ---
-    file_path = Path(__file__).parent.parent / "suivi_partenariats.xlsx"
+    donné = load_partenariats_data()
 
-    donné = pd.read_excel(file_path,sheet_name=None)
-    
     #donné = pd.read_excel('Imamiah Monney.xlsx', sheet_name=None)
     '''
     clé = list(donné.keys())

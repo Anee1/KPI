@@ -1,16 +1,9 @@
-from pathlib import Path
-import sys
-
 import streamlit as st
-import pandas as pd
 from KPI import nombre_clients, montant_souscrit_total, plot_histogramme_statut, taux_conversion, delai_median_conversion,pipeline_dormant,plot_pie_souscription_objectif
 from filtre import clients_Anné, filtrer_par_Semaine, filtrer_par_mois, filtrer_par_commercial
-from Formulairr import afficher_formulaire_et_tableau
-
-
-import plotly.express as px
+from Formulaire import afficher_formulaire_et_tableau
 import streamlit as st
-import pandas as pd
+from chargement_data import load_commercial_data, load_partenariats_data
 
 def afficher_onglet2():
 
@@ -18,61 +11,12 @@ def afficher_onglet2():
     # CONFIG PAGE
     # =========================
 
-    # --- Personnalisation CSS ---
-    st.markdown("""
-        <style>
-        :root { --ucamwal-red: #C8102E; }
-        h1, h2, h3 { color: var(--ucamwal-red); }
-        div.stButton > button:first-child {
-            background-color: var(--ucamwal-red);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            height: 3em;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        div.stButton > button:first-child:hover {
-            background-color: #a00c25;
-            color: #fff;
-        }
-        .stDataFrame table thead th {
-            background-color: var(--ucamwal-red) !important;
-            color: white !important;
-            font-weight: bold !important;
-            text-align: center !important;
-        }
-        .stDataFrame table tbody td { text-align: center !important; }
-        section[data-testid="stSidebar"] { background-color: #fff5f5; }
-        footer {
-            background-color: #f5f5f5;
-            color: #666;
-            padding: 10px;
-            text-align: center;
-            border-top: 2px solid var(--ucamwal-red);
-        }
-        .metric-card {
-            padding: 20px 25px;
-            border-radius: 12px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 3px 10px rgba(0,0,0,0.10);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .metric-title { font-size: 14px; color: #555; font-weight: 500; margin-bottom: 5px; }
-        .metric-value { font-size: 28px; color: #1f77b4; font-weight: 700; }
-        </style>
-    """, unsafe_allow_html=True)
+  
 
 
     # --- Chargement des données ---
-    file_path = Path(__file__).parent.parent / "Dataset commercial.xlsx"
+    df = load_commercial_data()
 
-    try:
-        df = pd.read_excel(file_path)
-    except FileNotFoundError:
-        st.error("Donnée indisponible")
-        sys.exit()
     #df = pd.read_excel('Dataset commercial.xlsx')
 
     # --- Fonction pour afficher une carte KPI ---
